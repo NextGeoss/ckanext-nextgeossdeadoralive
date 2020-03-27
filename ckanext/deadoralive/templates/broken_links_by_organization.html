@@ -1,0 +1,65 @@
+{% extends "organization/index.html" %}
+
+{% block styles %}
+  {{ super() }}
+  {% resource "deadoralive/styles/master.css" %}
+{% endblock %}
+
+{% block subtitle %}{{ _("Broken Links") }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('Organizations'), controller='organization', action='index' %}</li>
+  <li class="active"><a href="#">{{ _("Broken Links") }}</a></li>
+{% endblock %}
+
+{% block scripts %}
+  {% resource "javascript/brokenlinks_orgs_csv.js" %}
+{% endblock %}
+
+{% block primary %}
+  <article class="module">
+    <div class="module-content">
+      <h1>{{ _("Organizations with broken links") }}</h1>
+      {% set broken_links_array = [] %}
+      {% if organizations%}
+        <ul class="broken-links-list with-images unstyled">
+          {% for organization in organizations %}
+            {% set org_url = h.url_for(controller="organization", action="read", id=organization.name) %}
+            {% set org_image_url = organization.image_display_url or h.url_for_static('/base/images/placeholder-organization.png') %}
+            <li class="org" type="square" id="{{ organization.display_name }}">
+              <h3><a href="{{ org_url }}">{{ organization.display_name }}</a></h3>
+              <img src="{{ org_image_url }}" class="image" width="100">
+              <p>{{ _("{0} has {1} broken links:").format(organization.display_name, organization.num_broken_links) }}</p>
+              <ul>
+               {% for dataset in organization.datasets_with_broken_links %}
+                {% set dataset_url = h.url_for(controller="dataset", action="read", id=dataset.name) %}
+                  <li class="datasets" type="disc">
+                  <h4><a href="{{ dataset_url }}">{{ dataset.display_name }}</a> has {{ dataset.num_broken_links }} broken links:</h4>
+                  <ul>
+                    {% for resource in dataset.resources_with_broken_links %}
+                      {% set res_url = dataset_url + "/resource/" + resource %}
+                      {% set each_res = [organization.display_name, org_url, dataset.display_name, dataset_url, resource, res_url] %}
+                      <li class="resources" type="circle"><input type = "checkbox" class = "chk_resource" value="{{ resource }}"><a href="{{ res_url }}">  {{ resource }}</a> is broken</li>
+                      {{ broken_links_array.append(each_res) }}
+                    {% endfor %}
+                  </ul>
+               {% endfor %}
+              </ul>
+              <button onClick="select_org('{{ organization.display_name }}');">Select all resources from this organization</button>
+              <button onClick="clean_org('{{ organization.display_name }}');">Clean all resources from this organization</button>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>{{ _("This site has no broken links") }}</p>
+      {% endif %}
+      <p>{{ _("You can download a CSV file with the broken links selected. Mark them and click to download.") }}</p>
+      <button onClick="download_orgs_csv({{broken_links_array | list | replace("u'","'")}});">Download</button>
+      <button onClick="select_all();">Select all</button>
+      <button onClick="clean_selection();">Clean selection</button>
+    </div>
+  </article>
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}

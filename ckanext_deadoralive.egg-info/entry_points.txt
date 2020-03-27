@@ -1,0 +1,4 @@
+
+        [ckan.plugins]
+        deadoralive=ckanext.deadoralive.plugin:DeadOrAlivePlugin
+    

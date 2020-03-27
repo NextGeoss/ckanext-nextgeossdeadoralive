@@ -1,0 +1,90 @@
+{% extends "admin/base.html" %}
+{% block styles %}
+  {{ super() }}
+  {% resource "deadoralive/styles/master.css" %}
+{% endblock %}
+
+{% block subtitle %}{{ _("Broken Links") }}{% endblock %}
+
+{% block scripts %}
+  {% resource "javascript/brokenlinks_orgs_csv.js" %}
+{% endblock %}
+
+{% block primary_content_inner %}
+  {% if report %}
+    <ul class="broken-links-list unstyled">
+      {% set broken_links_array = [] %}
+      {% for item in report %}
+        {% if item.email %}
+          <li class="item">
+            <h3>{{ item.email }}</h3>
+            <p>{{ _("{0} broken links").format(item.num_broken_links) }}</p>
+            <ul>
+              {% for dataset in item.datasets_with_broken_links %}
+                <li class="datasets" type="disc">
+                  {% set dataset_url = h.url_for(controller="dataset", action="read", id=dataset.name) %}
+                  <a href="{{ dataset_url }}">{{ dataset.title }}</a>:{{ _("{0} broken links").format(dataset.num_broken_links) }}
+                  <ul>
+                  {% for resource in dataset.resources_with_broken_links %}
+                    {% set res_url = dataset_url + "/resource/" + resource %}
+                    {% set each_res = [item.email, item.mailto, dataset.name, dataset_url, resource, res_url] %}
+                    <li class="resources" type="circle"><input type = "checkbox" class = "chk_resource" value="{{ resource }}"><a href="{{ res_url }}">{{ resource }}</a> is broken</li>
+                    {% do broken_links_array.append(each_res) %}
+                  {% endfor %}
+                  </ul>
+                </li>
+              {% endfor %}
+            </ul>
+            <p>
+              <a href="{{ item.mailto }}" class="btn">
+                <i class="icon-envelope"></i>
+                {{ _("Email maintainer") }}
+              </a>
+            </p>
+          </li>
+        {% else %}
+          <li class="item">
+            <h3>{{ _("No author or maintainer email") }}</h3>
+            <p>{{ _("{0} broken links").format(item.num_broken_links) }}</p>
+            <ul>
+              {% for dataset in item.datasets_with_broken_links %}
+                <li>
+                  {% set dataset_url = h.url_for(controller="dataset", action="read", id=dataset.name) %}
+                  <a href="{{ dataset_url }}">{{ dataset.title }}</a>:{{ _("{0} broken links").format(dataset.num_broken_links) }}
+                  <ul>
+                  {% for resource in dataset.resources_with_broken_links %}
+                    {% set res_url = dataset_url + "/resource/" + resource %}
+                    {% set each_res = ["No email autor", "No maintainer email", dataset.name, dataset_url, resource, res_url] %}
+                    <li class="resources" type="circle"><input type = "checkbox" class = "chk_resource" value="{{ resource }}"><a href="{{ res_url }}">{{ resource }}</a> is broken</li>
+                    {% do broken_links_array.append(each_res) %}
+                  {% endfor %}
+                  </ul>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% endif %}
+      {% endfor %}
+      <p>{{ _("You can download a CSV file with the broken links selected. Mark them and click to download.") }}</p>
+      <button onClick="download_user_csv({{broken_links_array | list | replace("u'","'")}});">Download</button>
+      <button onClick="select_all();">Select all</button>
+      <button onClick="clean_selection();">Clean selection</button>
+    </ul>
+  {% else %}
+    <p>{{ _("This site has no broken links") }}</p>
+  {% endif %}
+{% endblock %}
+
+{% block secondary_content %}
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+      <i class="icon-info-sign"></i>
+      {{ _('Broken links') }}
+    </h2>
+    <div class="module-content">
+      {% trans %}
+        <p>These are the maintainers of datasets that have resources which have broken links within them.</p>
+      {% endtrans %}
+    </div>
+  </div>
+{% endblock %}
