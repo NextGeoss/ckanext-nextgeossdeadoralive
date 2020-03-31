@@ -9,10 +9,11 @@
 ckanext-deadoralive
 ===================
 
-ckanext-deadoralive is a CKAN extension for the [Dead or Alive link checker service](https://github.com/ckan/deadoralive).
+ckanext-nexgetossdeadoralive is a CKAN extension created used with [Dead or Alive link checker service](https://github.com/ckan/deadoralive).
 It provides the API that enables a CKAN site to be checked by the link checker,
 handles saving the results posted by the link checker in CKAN's database and
-adds various broken link reports to the CKAN site.
+adds various broken link reports to the CKAN site. 
+[Dead or Alive link checker service of NextGeoss](https://github.com/NextGeoss/ckanext-nextgeossdeadoralive).
 
 Features and screenshots: [seanh.cc/posts/ckanext-deadoralive](http://seanh.cc/posts/ckanext-deadoralive/)  
 
@@ -26,9 +27,10 @@ Tested with CKAN 2.2 and Python 2.7. Python 2.6 is not supported!
 Installation and Usage
 ----------------------
 
-1. Activate your CKAN virtualenv and then:
+1. Activate your CKAN virtualenv and install the extension:
 
-        pip install ckanext-deadoralive
+        . /usr/lib/ckan/default/bin/activate
+        pip install -e git+https://github.com/NextGeoss/ckanext-nextgeossdeadoralive#egg=ckanext-nextgeossdeadoralive
 
 2. Add `deadoralive` to the `ckan.plugins` setting in your CKAN config file.
 
@@ -58,7 +60,7 @@ Installation and Usage
    the broken link report pages appear on your site. At first they will report
    no broken links - because you haven't checked the site for broken links yet.
 
-5. Now go over to [Dead or Alive](https://github.com/ckan/deadoralive) and
+5. Now go over to [Dead or Alive](https://github.com/NextGeoss/nextgeoss-deadoralive) and
    install the link checker (either on the same machine where CKAN is installed
    or on a different machine - it doesn't matter). The API key that you
    configure the link checker with should be the API key of the user you
@@ -94,17 +96,22 @@ Development
 
 To install the plugin for development, activate your CKAN virtualenv and do:
 
-        git clone https://github.com/ckan/ckanext-deadoralive.git
-        cd ckanext-deadoralive
+        git clone https://github.com/NextGeoss/ckanext-nextgeossdeadoralive.git
+        cd ckanext-nextgeossdeadoralive
         python setup.py develop
         pip install -r dev-requirements.txt
 
 
-### Running the Tests
+Running the Tests
+-----------
 
-For the test it is used a junit test in python. The script located in unit_test
-tests the main functions for deadoralive:
-    #get_resources_to_check()
-    #get_url_for_id()
+For the test it is used a junit test in python. The script located in unit_test tests the main functions for deadoralive:
+
+        1. get_resources_to_check()
+        2. get_url_for_id()
+
 In the xml file you can see the results, the way to execute is very simple, just like a python:
-    #python test_unit_1.py
+
+        1. python test_unit_1.py
+        2. Check the xml file
+
