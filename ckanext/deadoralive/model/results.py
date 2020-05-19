@@ -134,12 +134,17 @@ def resource_in_orgs_filter(resource_id, orgs):
        A simple function to compare if the resource is from a dataset of one of the organizations to filter in config.py
        Return true or false
     """
-    resources = _resource_show(data_dict={'id' : resource_id,'include_tracking' : True})
-    datasets = _package_show(data_dict={'id' : resources["package_id"],'include_tracking' : True})
-    organization = datasets["organization"]
-    if organization is not None and datasets is not None:
+    try:
+        resource = _resource_show(data_dict={'id' : resource_id,'include_tracking' : True})
+        dataset = _package_show(data_dict={'id' : resource["package_id"],'include_tracking' : True})
+    except:
+        ckan.model.Session.delete(resource_id) #Delete the row for the resource id that does not exist anymore
+        ckan.model.Session.commit()
+        return False
+    organization = dataset["organization"]
+    if organization is not None and dataset is not None:
        if organization["name"] in orgs or "test" in organization["name"]:#For testing
-          if resources["id"] == resource_id:
+          if resource["id"] == resource_id:
              return True
     return False
 
