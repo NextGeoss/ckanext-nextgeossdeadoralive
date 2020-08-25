@@ -6,8 +6,8 @@
 [![License](https://pypip.in/license/ckanext-deadoralive/badge.svg)](https://pypi.python.org/pypi/ckanext-deadoralive/)
 
 
-ckanext-deadoralive
-===================
+Ckanext-NextgeossDeadorAlive
+============================
 
 ckanext-nexgetossdeadoralive is a CKAN extension created used with [Dead or Alive link checker service](https://github.com/ckan/deadoralive).
 It provides the API that enables a CKAN site to be checked by the link checker,
@@ -31,6 +31,7 @@ Installation and Usage
 
         . /usr/lib/ckan/default/bin/activate
         pip install -e git+https://github.com/NextGeoss/ckanext-nextgeossdeadoralive#egg=ckanext-nextgeossdeadoralive
+        pip install -r https://raw.githubusercontent.com/NextGeoss/ckanext-nextgeossdeadoralive/master/dev-requirements.txt
 
 2. Add `deadoralive` to the `ckan.plugins` setting in your CKAN config file.
 
