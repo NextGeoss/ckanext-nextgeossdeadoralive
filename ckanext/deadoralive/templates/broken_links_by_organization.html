@@ -32,7 +32,7 @@
               <p>{{ _("{0} has {1} broken links:").format(organization.display_name, organization.num_broken_links) }}</p>
               <ul>
                {% for dataset in organization.datasets_with_broken_links %}
-                {% set dataset_url = h.url_for(controller="dataset", action="read", id=dataset.name) %}
+                {% set dataset_url = "/dataset/" + dataset.name %}
                   <li class="datasets" type="disc">
                   <h4><a href="{{ dataset_url }}">{{ dataset.display_name }}</a> has {{ dataset.num_broken_links }} broken links:</h4>
                   <ul>
@@ -40,7 +40,7 @@
                       {% set res_url = dataset_url + "/resource/" + resource %}
                       {% set each_res = [organization.display_name, org_url, dataset.display_name, dataset_url, resource, res_url] %}
                       <li class="resources" type="circle"><input type = "checkbox" class = "chk_resource" value="{{ resource }}"><a href="{{ res_url }}">  {{ resource }}</a> is broken</li>
-                      {{ broken_links_array.append(each_res) }}
+                      {{% do broken_links_array.append(each_res) %}}
                     {% endfor %}
                   </ul>
                {% endfor %}

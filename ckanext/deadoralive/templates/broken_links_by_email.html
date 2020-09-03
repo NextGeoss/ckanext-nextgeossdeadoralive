@@ -22,7 +22,7 @@
             <ul>
               {% for dataset in item.datasets_with_broken_links %}
                 <li class="datasets" type="disc">
-                  {% set dataset_url = h.url_for(controller="dataset", action="read", id=dataset.name) %}
+                  {% set dataset_url = "/dataset/" + dataset.name %}
                   <a href="{{ dataset_url }}">{{ dataset.title }}</a>:{{ _("{0} broken links").format(dataset.num_broken_links) }}
                   <ul>
                   {% for resource in dataset.resources_with_broken_links %}
