@@ -40,7 +40,7 @@
                       {% set res_url = dataset_url + "/resource/" + resource %}
                       {% set each_res = [organization.display_name, org_url, dataset.display_name, dataset_url, resource, res_url] %}
                       <li class="resources" type="circle"><input type = "checkbox" class = "chk_resource" value="{{ resource }}"><a href="{{ res_url }}">  {{ resource }}</a> is broken</li>
-                      {{% do broken_links_array.append(each_res) %}}
+                      {% do broken_links_array.append(each_res) %}
                     {% endfor %}
                   </ul>
                {% endfor %}
