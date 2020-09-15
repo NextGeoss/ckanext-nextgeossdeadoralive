@@ -17,4 +17,4 @@ resend_pending_resources_after = 1
 broken_resource_min_fails = 1
 broken_resource_min_hours = 0
 authorized_users = []
-organization_to_filter = ["cmems","plan4all","gdacs-global-disaster-alert-and-coordination-system"] # Orgs: "cmems","plan4all","gdacs-global-disaster-alert-and-coordination-system","scihub"
+organization_to_filter = ["cmems","plan4all","gdacs","esa-scihub"] # Orgs: "cmems","plan4all","gdacs","esa-scihub"
