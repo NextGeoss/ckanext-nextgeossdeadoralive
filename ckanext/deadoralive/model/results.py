@@ -138,8 +138,8 @@ def resource_in_orgs_filter(resource_id, orgs):
         resource = _resource_show(data_dict={'id' : resource_id,'include_tracking' : True})
         dataset = _package_show(data_dict={'id' : resource["package_id"],'include_tracking' : True})
     except:
-        ckan.model.Session.delete(resource_id) #Delete the row for the resource id that does not exist anymore
-        ckan.model.Session.commit()
+        """ ckan.model.Session.delete(resource_id) #Delete the row for the resource id that does not exist anymore
+        ckan.model.Session.commit() """
         return False
     organization = dataset["organization"]
     if organization is not None and dataset is not None:
