@@ -68,6 +68,8 @@ class DeadOrAlivePlugin(plugins.SingletonPlugin):
         return {
             "ckanext_deadoralive_get_resources_to_check":
                 get.get_resources_to_check,
+            "ckanext_deadoralive_get_broken_links":
+                get.get_broken_links,
             "ckanext_deadoralive_upsert": update.upsert,
             "ckanext_deadoralive_get": get.get,
             "ckanext_deadoralive_broken_links_by_organization":
@@ -95,7 +97,12 @@ class DeadOrAlivePlugin(plugins.SingletonPlugin):
                      controller="ckanext.deadoralive.controllers:BrokenLinksController",
                      action="broken_links_by_email",
                      ckan_icon="link")
-
+        #Test to expose broken links
+        map_.connect("deadoralive_get_broken_links",
+                     "/deadoralive/get_broken_links",
+                     controller="ckanext.deadoralive.controllers:BrokenLinksController",
+                     action="get_broken_links",
+                     ckan_icon="link")
         # Make some of this plugin's custom action functions also available at
         # custom URLs. This is to support deadoralive's non-CKAN specific API.
         map_.connect(
@@ -127,4 +134,6 @@ class DeadOrAlivePlugin(plugins.SingletonPlugin):
                 ckanext.deadoralive.logic.auth.get.broken_links_by_organization,
             "ckanext_deadoralive_broken_links_by_email":
                 ckanext.deadoralive.logic.auth.get.broken_links_by_email,
+            "ckanext_deadoralive_get_broken_links":
+                ckanext.deadoralive.logic.auth.get.get_broken_links,
         }

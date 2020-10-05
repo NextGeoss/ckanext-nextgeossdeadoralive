@@ -43,6 +43,9 @@ class BrokenLinksController(toolkit.BaseController):
     def get_resources_to_check(self):
         return self._call_action("ckanext_deadoralive_get_resources_to_check")
    
+    def get_broken_links(self):
+        return self._call_action("ckanext_deadoralive_get_broken_links")
+
     def upsert(self):
 
         # For some reason True and False are getting turned into "True" and

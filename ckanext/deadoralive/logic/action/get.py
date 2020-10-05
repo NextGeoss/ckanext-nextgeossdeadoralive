@@ -183,6 +183,31 @@ def _package_search(context=None, data_dict=None):
     """
     return toolkit.get_action("package_search")(context=context,data_dict=data_dict)["results"]
 
+@toolkit.side_effect_free
+def get_broken_links(context, data_dict):
+    
+    report = []
+    organization_list = toolkit.get_action("organization_list")
+    broken_links_org = _broken_links_by_organization(context, organization_list, results.all, _package_search)
+    
+    for organization in broken_links_org:
+        org_rep = {
+        "name": organization["name"],
+        "resources_broken": []}
+        for dataset in organization["datasets_with_broken_links"]:
+            for resource in dataset["resources_with_broken_links"]:
+                res_show = toolkit.get_action("resource_show")(context=context,data_dict={'id' : resource,'include_tracking' : True})
+                res_url = res_show["url"]
+                res_rep = {
+                "resource_id" : resource,
+                "resource_url" : res_url
+                }
+                org_rep["resources_broken"].append(res_rep)
+        report.append(org_rep)
+    toolkit.check_access("ckanext_deadoralive_get_broken_links",context, data_dict)
+
+    return _broken_links_by_organization(context, organization_list, results.all, _package_search)
+    
 
 @toolkit.side_effect_free
 def broken_links_by_organization(context, data_dict):
