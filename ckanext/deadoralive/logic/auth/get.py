@@ -8,6 +8,11 @@ def get_resources_to_check(context, data_dict):
     return dict(success=context.get("user") in config.authorized_users)
 
 @toolkit.auth_allow_anonymous_access
+def get_broken_links(context, data_dict):
+    """Anyone can get the list of urls broken links report """
+    return dict(success=True)
+
+@toolkit.auth_allow_anonymous_access
 def get(context, data_dict):
     """Anyone can get the broken link report for a resource."""
     return dict(success=True)
