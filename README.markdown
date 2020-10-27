@@ -124,7 +124,8 @@ Api request implemented
 -----------
 
 For this extension it is been created a new api request that returns a data dict with information about the broken links:
-        1. Report foramt:
+
+        1. Report format:
            report = {
              "name" = organization_name,
              "resources_broken" = {
