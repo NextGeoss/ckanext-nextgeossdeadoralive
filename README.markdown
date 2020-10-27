@@ -120,4 +120,22 @@ In the xml file you can see the results, the way to execute is very simple, just
 
         1. python test_unit_1.py
         2. Check the xml file
+Api request implemented
+-----------
+
+For this extension it is been created a new api request that returns a data dict with information about the broken links:
+        1. Report foramt:
+           report = {
+             "name" = organization_name,
+             "resources_broken" = {
+                "dataset_id",
+                "resource_id",
+                "resource_url"
+             }
+           }
+        2. Call format: http://website/deadoralive/get_broken_links
+
+Also it is possible to filter this query for an specific dataset:
+
+        1. Call format: http://website/deadoralive/get_broken_links?dataset=<dataset_id>
 

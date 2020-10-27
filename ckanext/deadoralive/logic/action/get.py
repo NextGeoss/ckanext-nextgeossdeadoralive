@@ -207,7 +207,7 @@ def get_broken_links(context, data_dict):
                      "resource_url" : res_url
                    }
                    org_rep["resources_broken"].append(res_rep)
-        elif dataset_filter not None and dataset_filter != "All":
+        else:
            for dataset in organization["datasets_with_broken_links"]:
                if dataset["dataset_id"] == dataset_filter:
                   for resource in dataset["resources_with_broken_links"]:
