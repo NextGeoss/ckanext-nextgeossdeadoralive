@@ -160,6 +160,7 @@ def _broken_links_by_organization(context, organization_list, all_results, packa
               num_broken_links += len(broken_resource_ids)
               if broken_resource_ids:  # Only report datasets with broken links.
                   dataset_report_item = {
+                      "dataset_id" : dataset["id"],
                       "name": dataset["name"],
                       "display_name": dataset.get("title") or dataset.get("name"),
                       "num_broken_links": len(broken_resource_ids),
@@ -189,22 +190,36 @@ def get_broken_links(context, data_dict):
     report = []
     organization_list = toolkit.get_action("organization_list")
     broken_links_org = _broken_links_by_organization(context, organization_list, results.all, _package_search)
-    
+    dataset_filter = data_dict.get("dataset","All")
+
     for organization in broken_links_org:
         org_rep = {
         "name": organization["name"],
         "resources_broken": []}
-        for dataset in organization["datasets_with_broken_links"]:
-            for resource in dataset["resources_with_broken_links"]:
-                res_show = toolkit.get_action("resource_show")(context=context,data_dict={'id' : resource,'include_tracking' : True})
-                res_url = res_show["url"]
-                res_rep = {
-                "resource_id" : resource,
-                "resource_url" : res_url
-                }
-                org_rep["resources_broken"].append(res_rep)
+        if dataset_filter == "All":
+           for dataset in organization["datasets_with_broken_links"]:
+               for resource in dataset["resources_with_broken_links"]:
+                   res_show = toolkit.get_action("resource_show")(context=context,data_dict={'id' : resource,'include_tracking' : True})
+                   res_url = res_show["url"]
+                   res_rep = {
+                     "dataset_id" : dataset["dataset_id"],
+                     "resource_id" : resource,
+                     "resource_url" : res_url
+                   }
+                   org_rep["resources_broken"].append(res_rep)
+        elif dataset_filter not None and dataset_filter != "All":
+           for dataset in organization["datasets_with_broken_links"]:
+               if dataset["dataset_id"] == dataset_filter:
+                  for resource in dataset["resources_with_broken_links"]:
+                      res_show = toolkit.get_action("resource_show")(context=context,data_dict={'id' : resource,'include_tracking' : True})
+                      res_url = res_show["url"]
+                      res_rep = {
+                        "dataset_id" : dataset["dataset_id"],
+                        "resource_id" : resource,
+                        "resource_url" : res_url
+                      }
+                      org_rep["resources_broken"].append(res_rep)
         report.append(org_rep)
-    toolkit.check_access("ckanext_deadoralive_get_broken_links",context, data_dict)
 
     return report
     
