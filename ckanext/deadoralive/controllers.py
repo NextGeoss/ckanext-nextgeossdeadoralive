@@ -43,11 +43,16 @@ class BrokenLinksController(toolkit.BaseController):
     def get_resources_to_check(self):
         return self._call_action("ckanext_deadoralive_get_resources_to_check")
    
+    def get_broken_links(self):
+        data_dict = dict(toolkit.request.params)
+        return self._call_action("ckanext_deadoralive_get_broken_links", data_dict)
+
     def upsert(self):
 
         # For some reason True and False are getting turned into "True" and
         # "False". Turn them back.
         data_dict = dict(toolkit.request.params)
+
         if data_dict.get("alive") == "True":
             data_dict["alive"] = True
         elif data_dict.get("alive") == "False":
