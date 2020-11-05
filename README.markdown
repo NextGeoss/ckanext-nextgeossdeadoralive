@@ -35,7 +35,7 @@ Installation and Usage
 
    To install the extension in docker add this in the docker file:
 
-        RUN pip install -e git+https://github.com/NextGeoss/ckanext-nextgeossdeadoralive@v0.1.8#egg=ckanext-nextgeossdeadoralive
+        RUN pip install -e git+https://github.com/NextGeoss/ckanext-nextgeossdeadoralive@v0.1.10#egg=ckanext-nextgeossdeadoralive
         RUN pip install -r https://raw.githubusercontent.com/NextGeoss/ckanext-nextgeossdeadoralive/master/dev-requirements.txt
 
 2. Add `deadoralive` to the `ckan.plugins` setting in your CKAN config file.
