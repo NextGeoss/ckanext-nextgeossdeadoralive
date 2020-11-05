@@ -2,10 +2,10 @@
 import ckan.plugins.toolkit as toolkit
 import ckanext.deadoralive.config as config
 
-
+@toolkit.auth_allow_anonymous_access
 def get_resources_to_check(context, data_dict):
     """Only the configured users can get the get_resources_to_check API."""
-    return dict(success=context.get("user") in config.authorized_users)
+    return dict(success=True)
 
 @toolkit.auth_allow_anonymous_access
 def get_broken_links(context, data_dict):
