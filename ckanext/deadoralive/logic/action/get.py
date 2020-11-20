@@ -45,8 +45,9 @@ def get_resources_to_check(context, data_dict):
     n = data_dict.get("n", 50)
 
     orgs = config.organization_to_filter     #Orgs to filter from config.py
+    org_check = data_dict.get("org_check","All")
 
-    return results.get_resources_to_check(n, orgs, since=since_delta, pending_since=pending_since_delta)
+    return results.get_resources_to_check(n, orgs, org_check, since=since_delta, pending_since=pending_since_delta)
 
 
 def _is_broken(result):
