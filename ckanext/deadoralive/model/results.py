@@ -143,10 +143,9 @@ def resource_in_orgs_filter(resource_id, org_check, orgs):
         return False
     organization = dataset["organization"]
     if organization is not None and dataset is not None:
-       if organization["name"] == org_check:
-          if organization["name"] in orgs or "test" in organization["name"]:#For testing
-             if resource["id"] == resource_id:
-                return True
+       if organization["name"] == org_check or org_check == "All":
+          if resource["id"] == resource_id:
+             return True
     return False
 
 # FIXME: What about resources belonging to private datasets?
