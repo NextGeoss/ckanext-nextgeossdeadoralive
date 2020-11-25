@@ -129,7 +129,7 @@ def _resource_show(context=None, data_dict=None):
     """
     return toolkit.get_action("resource_show")(context=context,data_dict=data_dict)
 
-def resource_in_orgs_filter(resource_id, orgs):
+def resource_in_orgs_filter(resource_id, org_check, orgs):
     """
        A simple function to compare if the resource is from a dataset of one of the organizations to filter in config.py
        Return true or false
@@ -143,13 +143,13 @@ def resource_in_orgs_filter(resource_id, orgs):
         return False
     organization = dataset["organization"]
     if organization is not None and dataset is not None:
-       if organization["name"] in orgs or "test" in organization["name"]:#For testing
+       if organization["name"] == org_check or org_check == "All":
           if resource["id"] == resource_id:
              return True
     return False
 
 # FIXME: What about resources belonging to private datasets?
-def get_resources_to_check(n, orgs, since=None, pending_since=None):
+def get_resources_to_check(n, orgs, org_check, since=None, pending_since=None):
     """Return up to ``n`` resources to be checked for dead or alive links.
 
     This function has side effects! Pending results will be added to the
@@ -215,7 +215,7 @@ def get_resources_to_check(n, orgs, since=None, pending_since=None):
     q = q.order_by(ckan.model.Resource.last_modified.asc())
     resources_to_check = []
     for row in q:
-       check = resource_in_orgs_filter(row[0], orgs)
+       check = resource_in_orgs_filter(row[0], org_check, orgs)
        if check:
           if first_entry:
              resource_id = _make_pending_resource(row[0])
@@ -238,7 +238,7 @@ def get_resources_to_check(n, orgs, since=None, pending_since=None):
     q = q.filter(_LinkCheckerResult.last_checked < since_time_ago)
     q = q.order_by(_LinkCheckerResult.last_checked.asc())
     for row in q:
-       check = resource_in_orgs_filter(row[0], orgs)
+       check = resource_in_orgs_filter(row[0], org_check, orgs)
        if check:
           if first_entry:
              resource_id = _make_pending_resource(row[0])
@@ -259,7 +259,7 @@ def get_resources_to_check(n, orgs, since=None, pending_since=None):
     q = q.filter(_LinkCheckerResult.pending_since < pending_time_ago)
     q = q.order_by(_LinkCheckerResult.pending_since.asc())
     for row in q:
-       check = resource_in_orgs_filter(row[0], orgs)
+       check = resource_in_orgs_filter(row[0], org_check, orgs)
        if check:
           if first_entry:
              resource_id = _make_pending_resource(row[0])

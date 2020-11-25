@@ -17,4 +17,5 @@ resend_pending_resources_after = 1
 broken_resource_min_fails = 1
 broken_resource_min_hours = 0
 authorized_users = []
+#This filter is not used rigth now, it is just added for a future use
 organization_to_filter = ["cmems","plan4all","gdacs","esa-scihub", "ebas", "scent", "vito", "nasa-cmr"] # Orgs: "cmems","plan4all","gdacs","esa-scihub", "ebas", "scent", "vito" and "nasa-cmr"

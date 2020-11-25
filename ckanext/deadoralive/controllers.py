@@ -41,7 +41,8 @@ class BrokenLinksController(toolkit.BaseController):
         return json.dumps(result)
 
     def get_resources_to_check(self):
-        return self._call_action("ckanext_deadoralive_get_resources_to_check")
+        data_dict = dict(toolkit.request.params)
+        return self._call_action("ckanext_deadoralive_get_resources_to_check", data_dict)
    
     def get_broken_links(self):
         data_dict = dict(toolkit.request.params)
